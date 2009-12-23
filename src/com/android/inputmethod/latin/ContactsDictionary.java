@@ -20,13 +20,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.provider.ContactsContract.Contacts;
+import android.provider.Contacts.People;
 
 public class ContactsDictionary extends ExpandableDictionary {
 
     private static final String[] PROJECTION = {
-        Contacts._ID,
-        Contacts.DISPLAY_NAME,
+        People._ID,
+        People.DISPLAY_NAME,
     };
 
     private static final int INDEX_NAME = 1;
@@ -43,7 +43,7 @@ public class ContactsDictionary extends ExpandableDictionary {
         // when needed.
         ContentResolver cres = context.getContentResolver();
 
-        cres.registerContentObserver(Contacts.CONTENT_URI, true, mObserver = new ContentObserver(null) {
+        cres.registerContentObserver(People.CONTENT_URI, true, mObserver = new ContentObserver(null) {
             @Override
             public void onChange(boolean self) {
                 mRequiresReload = true;
@@ -65,7 +65,7 @@ public class ContactsDictionary extends ExpandableDictionary {
         if (mLastLoadedContacts == 0
                 || now - mLastLoadedContacts > 30 * 60 * 1000 /* 30 minutes */) {
             Cursor cursor = getContext().getContentResolver()
-                    .query(Contacts.CONTENT_URI, PROJECTION, null, null, null);
+                    .query(People.CONTENT_URI, PROJECTION, null, null, null);
             if (cursor != null) {
                 addWords(cursor);
             }
